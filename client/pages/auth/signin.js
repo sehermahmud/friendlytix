@@ -63,7 +63,7 @@ export default () => {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <Paper className={classes.paper}>
+      <Paper className={classes.paper} style={{ background: 'none' }}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon color="disabled" style={{ margin: '30px' }} />
         </Avatar>

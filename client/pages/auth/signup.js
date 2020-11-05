@@ -11,6 +11,17 @@ import Container from '@material-ui/core/Container';
 import { Input, Paper } from '@material-ui/core';
 import useRequest from '../../hooks/use-request';
 import Link from 'next/link';
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBCard,
+  MDBCardBody,
+  MDBInput,
+  MDBBtn,
+  MDBIcon,
+  MDBModalFooter,
+} from 'mdbreact';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,7 +76,7 @@ export default () => {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <Paper className={classes.paper}>
+      <Paper className={classes.paper} style={{ background: 'none' }}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon color="disabled" style={{ margin: '30px' }} />
         </Avatar>

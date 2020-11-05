@@ -7,7 +7,24 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Link from 'next/link';
-import { Grid, Tab } from '@material-ui/core';
+import {
+  Divider,
+  Grid,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  SwipeableDrawer,
+  Tab,
+  useMediaQuery,
+} from '@material-ui/core';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import LockIcon from '@material-ui/icons/Lock';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+
+const drawerWidth = 250;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,12 +35,20 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    fontSize: '3em',
+    fontSize: '2em',
+    color: '#f06292',
     fontFamily: 'Merienda One',
+    [theme.breakpoints.down('md')]: {
+      fontSize: '2em',
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '2em',
+    },
     [theme.breakpoints.down('xs')]: {
-      fontSize: '1.3em',
+      fontSize: '2em',
     },
   },
+
   link: {
     fontFamily: 'Handlee',
     textTransform: 'none',
@@ -31,46 +56,66 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
     background: '#FFCCE6',
     borderRadius: 0,
+    '&:hover': {
+      background: '#FFCCE6',
+    },
     [theme.breakpoints.down('xs')]: {
       fontSize: '1.2em',
     },
   },
   appbar: {
     background: 'linear-gradient(45deg, #90caf9 30%, #f48fb1 60%, #b2ff59 90%)',
-    height: '5.5em',
+    height: '4em',
     [theme.breakpoints.down('md')]: {
-      height: '5em',
+      height: '4em',
     },
     [theme.breakpoints.down('sm')]: {
-      height: '4.8em',
+      height: '4em',
     },
     [theme.breakpoints.down('xs')]: {
-      height: '3.5em',
+      height: '3.7em',
     },
+    zIndex: theme.zIndex.drawer + 1,
   },
-  logo: {
-    height: '8em',
-    width: '8rem',
-    [theme.breakpoints.down('md')]: {
-      height: '7em',
-      width: '7rem',
-    },
-    [theme.breakpoints.down('xs')]: {
-      height: '5.5em',
-      width: '5.5rem',
-    },
-  },
-  logoContainer: {
-    padding: 0,
+  drawerIconContainer: {
+    marginLeft: 'auto',
     '&:hover': {
       backgroundColor: 'transparent',
     },
   },
+  drawerIcon: {
+    height: '40px',
+    width: '40px',
+    color: 'white',
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+  },
+  toolbar: theme.mixins.toolbar,
 }));
 
 export default ({ currentUser }) => {
   const classes = useStyles();
   const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down('xs'));
+  const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const [open, setOpen] = React.useState(false);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
   const links = [
     !currentUser && { label: 'Sign Up', href: '/auth/signup' },
@@ -82,36 +127,298 @@ export default ({ currentUser }) => {
       return (
         <Button key={href} color="inherit" className={classes.link}>
           <Link underline="none" href={href}>
-            <a className="padding: 0">{label}</a>
+            <a className="padding: 0" style={{ color: 'white' }}>
+              {label}
+            </a>
           </Link>
         </Button>
       );
     });
 
-  return (
-    <div className={classes.root}>
-      <AppBar position="static" className={classes.appbar}>
-        <Toolbar>
+  const isLoggedIn = currentUser;
+
+  const header = (
+    <Grid container direction="row" justify="flex-end">
+      {!currentUser ? (
+        <div>
+          <Button
+            color="inherit"
+            className={classes.link}
+            style={{
+              background: 'none',
+              color: '#e91e63',
+              marginRight: '0.4em',
+              borderRadius: '0.5em',
+            }}
+          >
+            <Link underline="none" href="/auth/signin">
+              <a
+                underline="none"
+                className="padding: 0"
+                style={{ color: '#e91e63', textDecoration: 'none' }}
+              >
+                Login
+              </a>
+            </Link>
+          </Button>
+          <Button
+            color="inherit"
+            className={classes.link}
+            style={{ borderRadius: '0.3em' }}
+          >
+            <Link underline="none" href="/auth/signup">
+              <a
+                underline="none"
+                className="padding: 0"
+                style={{ color: 'white', textDecoration: 'none' }}
+              >
+                Sign Up
+              </a>
+            </Link>
+          </Button>
+        </div>
+      ) : (
+        <div
+          className="dropdown"
+          style={{
+            background: 'white',
+            borderColor: '#f06292',
+            marginRight: '1.5em',
+          }}
+        >
+          <a
+            className="btn btn-secondary dropdown-toggle"
+            href="#"
+            role="button"
+            id="dropdownMenuLink"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            style={{
+              color: '#f06292',
+              fontSize: '1.4em',
+              fontFamily: 'Merienda One',
+              background: 'none',
+              borderColor: '#f06292',
+              borderRadius: '0.1em',
+            }}
+          >
+            {isLoggedIn ? isLoggedIn.name : ''}
+          </a>
+
+          <div
+            className="dropdown-menu"
+            style={{}}
+            aria-labelledby="dropdownMenuLink"
+          >
+            <Link underline="none" href="/auth/signout">
+              <a
+                className="dropdown-item"
+                underline="none"
+                style={{ color: '#f06292', textDecoration: 'none' }}
+              >
+                Sign Out
+              </a>
+            </Link>
+          </div>
+        </div>
+      )}
+    </Grid>
+  );
+
+  const drawer = (
+    <React.Fragment>
+      <Grid container direction="row" justify="flex-end">
+        <div
+          style={{
+            marginRight: '1em',
+          }}
+        >
+          <Typography>{isLoggedIn ? 'Sign-In as' : ''}</Typography>
+          <Typography style={{ color: '#f06292', fontSize: '1.4em' }}>
+            {isLoggedIn ? isLoggedIn.name : ''}
+          </Typography>
+        </div>
+      </Grid>
+      <SwipeableDrawer
+        disableBackdropTransition={!iOS}
+        disableDiscovery={iOS}
+        anchor="left"
+        open={open}
+        classes={{ paper: classes.drawerPaper }}
+      >
+        <div className={classes.toolbarMargin} />
+        <div className={classes.drawerHeader}>
           <Link href="/">
             <a
-              className="navbar-brand"
+              className={classes.title}
               style={{
-                flexGrow: 1,
-                fontSize: '3em',
-                fontFamily: 'Merienda One',
-                [theme.breakpoints.down('xs')]: {
-                  fontSize: '1.3em',
-                },
+                textDecoration: 'none',
+                color: '#f06292',
+                textTransform: 'none',
               }}
             >
               FriendlyTix
             </a>
           </Link>
-          <Grid container direction="row" justify="flex-end">
-            {links}
-          </Grid>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'ltr' ? (
+              <ChevronLeftIcon />
+            ) : (
+              <ChevronRightIcon />
+            )}
+          </IconButton>
+        </div>
+        <Divider />
+        {/* <List>{links}</List> */}
+        {!currentUser ? (
+          <List>
+            <Link href="/auth/signin" underline="none">
+              <ListItem
+                button
+                color="inherit"
+                className={classes.link}
+                style={{ background: 'none', color: '#e91e63' }}
+              >
+                <ListItemIcon>
+                  <LockIcon />
+                </ListItemIcon>
+                <a
+                  underline="none"
+                  className="padding: 0"
+                  style={{ color: '#e91e63', textDecoration: 'none' }}
+                >
+                  <ListItemText>Login</ListItemText>
+                </a>
+              </ListItem>
+            </Link>
+            <Link href="/auth/signup" underline="none">
+              <ListItem button color="inherit" className={classes.link}>
+                <ListItemIcon>
+                  <PersonAddIcon />
+                </ListItemIcon>
+                <a
+                  underline="none"
+                  className="padding: 0"
+                  style={{ color: 'white', textDecoration: 'none' }}
+                >
+                  <ListItemText>Sign Up</ListItemText>
+                </a>
+              </ListItem>
+            </Link>
+          </List>
+        ) : (
+          <React.Fragment>
+            <List>
+              <Link href="" underline="none">
+                <ListItem
+                  button
+                  color="inherit"
+                  className={classes.link}
+                  style={{ background: 'none', color: '#2196f3' }}
+                >
+                  <ListItemIcon>
+                    <LockIcon style={{ color: '#e91e63' }} />
+                  </ListItemIcon>
+                  <a
+                    underline="none"
+                    className="padding: 0"
+                    style={{ color: '#2196f3', textDecoration: 'none' }}
+                  >
+                    <ListItemText>Ticket</ListItemText>
+                  </a>
+                </ListItem>
+              </Link>
+              <Link href="" underline="none">
+                <ListItem
+                  button
+                  color="inherit"
+                  className={classes.link}
+                  style={{ background: 'none', color: '#2196f3' }}
+                >
+                  <ListItemIcon>
+                    <LockIcon style={{ color: '#66bb6a' }} />
+                  </ListItemIcon>
+                  <a
+                    underline="none"
+                    className="padding: 0"
+                    style={{ color: '#673ab7', textDecoration: 'none' }}
+                  >
+                    <ListItemText>Order</ListItemText>
+                  </a>
+                </ListItem>
+              </Link>
+            </List>
+            <Divider style={{ marginTop: '15em' }} />
+            <List style={{ paddingTop: 0, paddingBottom: 0 }}>
+              <ListItem
+                style={{
+                  color: '#ff1744',
+                  marginTop: '1em',
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                }}
+              >
+                <ListItemText>Danger </ListItemText>
+              </ListItem>
+            </List>
+            <List>
+              <Link href="/auth/signout" underline="none">
+                <ListItem
+                  button
+                  color="inherit"
+                  className={classes.link}
+                  style={{ background: '#ff1744' }}
+                >
+                  <ListItemIcon>
+                    <ExitToAppIcon />
+                  </ListItemIcon>
+                  <a
+                    className="padding: 0"
+                    style={{ color: 'white', textDecoration: 'none' }}
+                  >
+                    <ListItemText>Sign Out</ListItemText>
+                  </a>
+                </ListItem>
+              </Link>{' '}
+            </List>
+          </React.Fragment>
+        )}
+      </SwipeableDrawer>
+    </React.Fragment>
+  );
+
+  return (
+    <div className={classes.root}>
+      <AppBar position="static" className={classes.appbar}>
+        <Toolbar style={{ height: 0 }}>
+          {matches ? (
+            <IconButton
+              onClick={() => setOpen(!open)}
+              className={classes.drawerIconContainer}
+              disableRipple
+            >
+              <MenuIcon className={classes.drawerIcon} />
+            </IconButton>
+          ) : (
+            <div></div>
+          )}
+          <Link href="/">
+            <a
+              className={classes.title}
+              style={{
+                textDecoration: 'none',
+                color: '#f06292',
+                textTransform: 'none',
+              }}
+            >
+              FriendlyTix
+            </a>
+          </Link>
+          {matches ? drawer : header}
         </Toolbar>
       </AppBar>
+      <div className={classes.toolbarMargin} />
     </div>
   );
 };

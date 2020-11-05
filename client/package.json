@@ -15,6 +15,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
+    "mdbreact": "^4.27.0",
     "next": "^9.3.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"

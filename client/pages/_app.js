@@ -6,14 +6,6 @@ import theme from '../components/theme';
 import Header from '../components/header';
 import Footer from '../components/Footer';
 
-const Username = (currentUser) => {
-  if (!currentUser.name) {
-    return 'Hi';
-  } else {
-    currentUser.name;
-  }
-};
-
 const AppComponent = ({ Component, pageProps, currentUser }) => {
   return (
     <div>
@@ -26,9 +18,6 @@ const AppComponent = ({ Component, pageProps, currentUser }) => {
           />
         </Head>
         <ThemeProvider theme={theme}>
-          <h1 style={{ textAlign: 'center', fontFamily: 'Merienda One' }}>
-            {Username}
-          </h1>
           <Header currentUser={currentUser} />
           <Component {...pageProps} />
           <Footer />

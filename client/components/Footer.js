@@ -7,25 +7,24 @@ const useStyles = makeStyles((theme) => ({
     background: 'linear-gradient(45deg, #90caf9 30%, #f48fb1 60%, #b2ff59 90%)',
     width: '100%',
     position: 'relative',
-    height: '3em',
+    height: '2.5em',
   },
   reservedText: {
     textAlign: 'center',
     color: 'white',
-    fontSize: '1.8em',
+    fontSize: '1.3em',
     fontFamily: 'Merienda One',
-    marginTop: '29em',
+    marginTop: '45em',
     [theme.breakpoints.down('md')]: {
-      marginTop: '48em',
-      fontSize: '1.6em',
+      marginTop: '60em',
+      fontSize: '1.3em',
     },
     [theme.breakpoints.down('sm')]: {
-      marginTop: '33em',
-      fontSize: '1.6em',
+      marginTop: '50em',
+      fontSize: '1.2em',
     },
     [theme.breakpoints.down('xs')]: {
-      marginTop: '26em',
-      fontSize: '1.4em',
+      marginTop: '35em',
     },
   },
 }));
@@ -37,7 +36,17 @@ export default function Footer(props) {
     <footer className={classes.footer}>
       <Typography className={classes.reservedText}>
         All right reserved by{' '}
-        <Link href="#" color="secondary" underline="none">
+        <Link
+          href="https://seher-development.vercel.app/"
+          color="secondary"
+          underline="none"
+          style={{
+            textDecoration: 'none',
+            textTransform: 'none',
+            color: '#f50057',
+          }}
+          target="_blank"
+        >
           Seher
         </Link>
       </Typography>

@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
 export default ({ url, method, body, onSuccess }) => {
   const classes = useStyles();
   const [errors, setErrors] = useState(null);
