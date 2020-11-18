@@ -10,6 +10,10 @@ spec:
     - host: friendlytix.dev
       http:
         paths:
+          - path: /api/payments/?(.*)
+            backend:
+              serviceName: payments-srv
+              servicePort: 3000
           - path: /api/users/?(.*)
             backend:
               serviceName: auth-srv
