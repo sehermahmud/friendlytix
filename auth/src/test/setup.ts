@@ -21,7 +21,7 @@ beforeAll(async () => {
 
   await mongoose.connect(mongoUri, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
   });
 });
 
@@ -48,7 +48,7 @@ global.signin = async () => {
     .send({
       name,
       email,
-      password,
+      password
     })
     .expect(201);
 
