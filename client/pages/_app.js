@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import buildClient from '../api/build-client';
+import BuildClient from '../api/build-client';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from '../components/theme';
@@ -19,7 +19,7 @@ const AppComponent = ({ Component, pageProps, currentUser }) => {
         </Head>
         <ThemeProvider theme={theme}>
           <Header currentUser={currentUser} />
-          <Component {...pageProps} />
+          <Component currentUser={currentUser} {...pageProps} />
           <Footer />
         </ThemeProvider>
       </React.Fragment>
@@ -28,12 +28,16 @@ const AppComponent = ({ Component, pageProps, currentUser }) => {
 };
 
 AppComponent.getInitialProps = async (appContext) => {
-  const client = buildClient(appContext.ctx);
+  const client = BuildClient(appContext.ctx);
   const { data } = await client.get('/api/users/currentuser');
 
   let pageProps = {};
   if (appContext.Component.getInitialProps) {
-    pageProps = await appContext.Component.getInitialProps(appContext.ctx);
+    pageProps = await appContext.Component.getInitialProps(
+      appContext.ctx,
+      client,
+      data.currentUser
+    );
   }
 
   return {

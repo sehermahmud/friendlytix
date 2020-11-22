@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default () => {
+const SignUp = () => {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -108,6 +108,9 @@ export default () => {
             variant="contained"
             color="primary"
             className={classes.submit}
+            style={{
+              background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+            }}
           >
             Sign In
           </Button>
@@ -116,3 +119,5 @@ export default () => {
     </Container>
   );
 };
+
+export default SignUp;

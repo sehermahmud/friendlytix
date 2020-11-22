@@ -4,7 +4,7 @@ import { Link, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   footer: {
-    background: 'linear-gradient(45deg, #90caf9 30%, #f48fb1 60%, #b2ff59 90%)',
+    background: 'linear-gradient(45deg, white 10%, #f85b93 60%, #ff4081 90%)',
     width: '100%',
     position: 'relative',
     height: '2.5em',

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Router from 'next/router';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -11,17 +11,6 @@ import Container from '@material-ui/core/Container';
 import { Input, Paper } from '@material-ui/core';
 import useRequest from '../../hooks/use-request';
 import Link from 'next/link';
-import {
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBInput,
-  MDBBtn,
-  MDBIcon,
-  MDBModalFooter,
-} from 'mdbreact';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default () => {
+const SignUp = () => {
   const classes = useStyles();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -118,6 +107,9 @@ export default () => {
             variant="contained"
             color="primary"
             className={classes.submit}
+            style={{
+              background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+            }}
           >
             Sign Up
           </Button>
@@ -133,3 +125,5 @@ export default () => {
     </Container>
   );
 };
+
+export default SignUp;

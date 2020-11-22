@@ -9,6 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Link from 'next/link';
 import {
   Divider,
+  Drawer,
   Grid,
   List,
   ListItem,
@@ -64,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   appbar: {
-    background: 'linear-gradient(45deg, #90caf9 30%, #f48fb1 60%, #b2ff59 90%)',
+    background: 'linear-gradient(45deg, white 10%, #f85b93 60%, #ff4081 90%)',
     height: '4em',
     [theme.breakpoints.down('md')]: {
       height: '4em',
@@ -102,128 +103,148 @@ const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
 }));
 
-export default ({ currentUser }) => {
+const Header = ({ currentUser }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down('xs'));
+  const matchesXS = useMediaQuery(theme.breakpoints.down('xs'));
+  const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
   const [open, setOpen] = React.useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
 
   const handleDrawerClose = () => {
     setOpen(false);
   };
 
-  const links = [
-    !currentUser && { label: 'Sign Up', href: '/auth/signup' },
-    !currentUser && { label: 'Sign In', href: '/auth/signin' },
-    currentUser && { label: 'Sign Out', href: '/auth/signout' },
-  ]
-    .filter((linkConfig) => linkConfig)
-    .map(({ label, href }) => {
-      return (
-        <Button key={href} color="inherit" className={classes.link}>
-          <Link underline="none" href={href}>
-            <a className="padding: 0" style={{ color: 'white' }}>
-              {label}
-            </a>
-          </Link>
-        </Button>
-      );
-    });
-
   const isLoggedIn = currentUser;
 
   const header = (
-    <Grid container direction="row" justify="flex-end">
-      {!currentUser ? (
-        <div>
-          <Button
-            color="inherit"
-            className={classes.link}
-            style={{
-              background: 'none',
-              color: '#e91e63',
-              marginRight: '0.4em',
-              borderRadius: '0.5em',
-            }}
-          >
-            <Link underline="none" href="/auth/signin">
-              <a
-                underline="none"
-                className="padding: 0"
-                style={{ color: '#e91e63', textDecoration: 'none' }}
-              >
-                Login
-              </a>
-            </Link>
-          </Button>
-          <Button
-            color="inherit"
-            className={classes.link}
-            style={{ borderRadius: '0.3em' }}
-          >
-            <Link underline="none" href="/auth/signup">
-              <a
-                underline="none"
-                className="padding: 0"
-                style={{ color: 'white', textDecoration: 'none' }}
-              >
-                Sign Up
-              </a>
-            </Link>
-          </Button>
-        </div>
-      ) : (
-        <div
-          className="dropdown"
-          style={{
-            background: 'white',
-            borderColor: '#f06292',
-            marginRight: '1.5em',
-          }}
-        >
-          <a
-            className="btn btn-secondary dropdown-toggle"
-            href="#"
-            role="button"
-            id="dropdownMenuLink"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            style={{
-              color: '#f06292',
-              fontSize: '1.4em',
-              fontFamily: 'Merienda One',
-              background: 'none',
-              borderColor: '#f06292',
-              borderRadius: '0.1em',
-            }}
-          >
-            {isLoggedIn ? isLoggedIn.name : ''}
-          </a>
-
-          <div
-            className="dropdown-menu"
-            style={{}}
-            aria-labelledby="dropdownMenuLink"
-          >
-            <Link underline="none" href="/auth/signout">
-              <a
-                className="dropdown-item"
-                underline="none"
-                style={{ color: '#f06292', textDecoration: 'none' }}
-              >
-                Sign Out
-              </a>
-            </Link>
+    <React.Fragment>
+      <Grid container direction="row" justify="flex-end">
+        {!currentUser ? (
+          <div>
+            <Button
+              color="inherit"
+              className={classes.link}
+              style={{
+                background: 'none',
+                color: '#e91e63',
+                marginRight: '0.4em',
+                borderRadius: '0.5em',
+              }}
+            >
+              <Link underline="none" href="/auth/signin">
+                <a
+                  underline="none"
+                  className="padding: 0"
+                  style={{ color: 'white', textDecoration: 'none' }}
+                >
+                  Login
+                </a>
+              </Link>
+            </Button>
+            <Button
+              color="inherit"
+              className={classes.link}
+              style={{ borderRadius: '0.3em' }}
+            >
+              <Link underline="none" href="/auth/signup">
+                <a
+                  underline="none"
+                  className="padding: 0"
+                  style={{ color: 'white', textDecoration: 'none' }}
+                >
+                  Sign Up
+                </a>
+              </Link>
+            </Button>
           </div>
-        </div>
-      )}
-    </Grid>
+        ) : (
+          <div>
+            <Button
+              color="inherit"
+              className={classes.link}
+              style={{ borderRadius: '0.3em', marginRight: '0.5em' }}
+            >
+              <Link underline="none" href="/tickets/new">
+                <a
+                  underline="none"
+                  className="padding: 0"
+                  style={{ color: 'white', textDecoration: 'none' }}
+                >
+                  Sell Ticket
+                </a>
+              </Link>
+            </Button>
+            <Button
+              color="inherit"
+              className={classes.link}
+              style={{ borderRadius: '0.3em', marginRight: '0.5em' }}
+            >
+              <Link underline="none" href="/orders">
+                <a
+                  underline="none"
+                  className="padding: 0"
+                  style={{ color: 'white', textDecoration: 'none' }}
+                >
+                  My Orders
+                </a>
+              </Link>
+            </Button>
+            <Button
+              style={{
+                borderRadius: '0.3em',
+                textDecoration: 'none',
+                textTransform: 'none',
+              }}
+            >
+              <div
+                className="dropdown"
+                style={{
+                  background: 'white',
+                  borderColor: '#f06292',
+                }}
+              >
+                <a
+                  className="btn btn-secondary dropdown-toggle"
+                  href="#"
+                  role="button"
+                  id="dropdownMenuLink"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  style={{
+                    color: '#f06292',
+                    fontSize: '1.4em',
+                    fontFamily: 'Merienda One',
+                    background: 'none',
+                    borderColor: '#f06292',
+                    borderRadius: '0.1em',
+                  }}
+                >
+                  {isLoggedIn ? isLoggedIn.name : ''}
+                </a>
+
+                <div
+                  className="dropdown-menu"
+                  style={{}}
+                  aria-labelledby="dropdownMenuLink"
+                >
+                  <Link underline="none" href="/auth/signout">
+                    <a
+                      className="dropdown-item"
+                      underline="none"
+                      style={{ color: '#f06292', textDecoration: 'none' }}
+                    >
+                      Sign Out
+                    </a>
+                  </Link>
+                </div>
+              </div>
+            </Button>
+          </div>
+        )}
+      </Grid>
+    </React.Fragment>
   );
 
   const drawer = (
@@ -392,7 +413,7 @@ export default ({ currentUser }) => {
     <div className={classes.root}>
       <AppBar position="static" className={classes.appbar}>
         <Toolbar style={{ height: 0 }}>
-          {matches ? (
+          {matchesXS ? (
             <IconButton
               onClick={() => setOpen(!open)}
               className={classes.drawerIconContainer}
@@ -415,10 +436,12 @@ export default ({ currentUser }) => {
               FriendlyTix
             </a>
           </Link>
-          {matches ? drawer : header}
+          {matchesXS ? drawer : header}
         </Toolbar>
       </AppBar>
       <div className={classes.toolbarMargin} />
     </div>
   );
 };
+
+export default Header;
