@@ -2,7 +2,7 @@ name: deploy-man
 
 on:
   push:
-    branches: 
+    branches:
       - master
     paths:
       - 'infra/**'
